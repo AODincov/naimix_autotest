@@ -1,8 +1,3 @@
-import selenium.webdriver.remote.webelement
-from selenium.webdriver.support.wait import WebDriverWait
-
-from resources.configuration import TIMEOUT
-from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 
 
