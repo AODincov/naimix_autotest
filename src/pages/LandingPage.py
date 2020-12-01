@@ -1,9 +1,9 @@
-from src.core.WebElement import WebElement
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 
 
 class LandingPage:
-    __login_button: WebElement = WebElement("#root > div.home > header > div > div > a > div")
+    __login_button = (By.CSS_SELECTOR, "#root > div.home > header > div > div > a > div")
 
     @staticmethod
     def open_login_page(driver):

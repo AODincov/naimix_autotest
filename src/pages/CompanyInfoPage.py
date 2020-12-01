@@ -1,11 +1,10 @@
-from pages.blocks.LeftNavigationBlock import LeftNavigationBlock
+from src.pages.blocks.LeftNavigationBlock import LeftNavigationBlock
 from selenium.webdriver.support import expected_conditions as ec
-
-from src.core.WebElement import WebElement
+from selenium.webdriver.common.by import By
 
 
 class CompanyInfoPage(LeftNavigationBlock):
-    __client_contact_info: WebElement = WebElement("div.client-contact-info.container-fluid")
+    __client_contact_info = (By.XPATH, "div.client-contact-info.container-fluid")
 
     @staticmethod
     def is_open(driver):

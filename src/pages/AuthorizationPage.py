@@ -1,11 +1,11 @@
-from src.core.WebElement import WebElement
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 
 
 class AuthorizationPage:
-    __login_button: WebElement = WebElement("//button")
-    __email_input: WebElement = WebElement("//input[@placeholder='E-mail']")
-    __password_input: WebElement = WebElement("//input[@placeholder='Пароль']")
+    __login_button = (By.XPATH, "//button")
+    __email_input = (By.XPATH, "//input[@placeholder='E-mail']")
+    __password_input = (By.XPATH, "//input[@placeholder='Пароль']")
 
     @staticmethod
     def login(driver, login: str, password:str):
