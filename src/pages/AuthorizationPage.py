@@ -9,10 +9,10 @@ class AuthorizationPage:
 
     @staticmethod
     def login(driver, login: str, password:str):
-        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__email_input.get())).send_keys(login)
-        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__password_input.get())).send_keys(password)
-        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__login_button.get())).click()
+        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__email_input)).send_keys(login)
+        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__password_input)).send_keys(password)
+        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__login_button)).click()
 
     @staticmethod
     def is_open(driver):
-        driver.wait.until(ec.visibility_of_element_located(AuthorizationPage.__login_button.get()))
+        driver.wait.until(ec.visibility_of_element_located(AuthorizationPage.__login_button))

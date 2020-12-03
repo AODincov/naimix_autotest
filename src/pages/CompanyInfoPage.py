@@ -8,4 +8,4 @@ class CompanyInfoPage(LeftNavigationBlock):
 
     @staticmethod
     def is_open(driver):
-        driver.wait.until(ec.visibility_of_element_located(CompanyInfoPage.__client_contact_info.get()))
+        driver.wait.until(ec.visibility_of_element_located(CompanyInfoPage.__client_contact_info))

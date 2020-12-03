@@ -16,3 +16,5 @@ class TestAuthorization(BaseTest):
         AuthorizationPage.login(self.driver, login="admin@admin.ru", password="Aa123456")
         CompanyInfoPage.is_open(self.driver)
 
+
+

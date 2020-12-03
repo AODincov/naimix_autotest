@@ -7,11 +7,11 @@ class LandingPage:
 
     @staticmethod
     def open_login_page(driver):
-        driver.wait.until(ec.element_to_be_clickable(LandingPage.__login_button.get())).click()
+        driver.wait.until(ec.element_to_be_clickable(LandingPage.__login_button)).click()
 
         #todo Местами встречал такой возврат в примерах, но чет хз
         #return AuthorizationPage
 
     @staticmethod
     def is_open(driver):
-        driver.wait.until(ec.visibility_of_element_located(LandingPage.__login_button.get()))
+        driver.wait.until(ec.visibility_of_element_located(LandingPage.__login_button))
