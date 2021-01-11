@@ -1,4 +1,4 @@
-from pages.blocks.LeftNavigationBlock import LeftNavigationBlock
+from src.pages.blocks.LeftNavigationBlock import LeftNavigationBlock
 from selenium.webdriver.support import expected_conditions as ec
 
 from src.core.WebElement import WebElement

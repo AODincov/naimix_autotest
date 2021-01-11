@@ -6,6 +6,17 @@ class AuthorizationPage:
     __login_button: WebElement = WebElement("//button")
     __email_input: WebElement = WebElement("//input[@placeholder='E-mail']")
     __password_input: WebElement = WebElement("//input[@placeholder='Пароль']")
+    __login_cookie_button: WebElement = WebElement("#root > div.login__wrapper > div.login-cookie > div > "
+                                                   "div.login-cookie__button")
+
+    @staticmethod
+    def open_login_page(driver):
+        driver.get('https://nm-test.mmtr.ru/')
+        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__email_input.get()))
+
+    @staticmethod
+    def close_cookie_login(driver):
+        driver.wait.until(ec.element_to_be_clickable(AuthorizationPage.__login_cookie_button.get())).click()
 
     @staticmethod
     def login(driver, login: str, password:str):
