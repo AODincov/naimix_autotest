@@ -4,16 +4,19 @@ from selenium.webdriver.support.select import Select
 
 
 class AssertsSteps:
+
     @staticmethod
     def assert_dropdown_div(driver, list_for_check, dropdown):
         list_in_dropdown = []
         len_list_in_dropdown = len(driver.find_elements(dropdown[0], dropdown[1]))
         while len_list_in_dropdown != 0:
             if len_list_in_dropdown == 1:
-                list_in_dropdown.append(driver.find_element(dropdown[0], dropdown[1]).get_attribute("innerHTML").splitlines()[0])
+                list_in_dropdown.append(
+                    driver.find_element(dropdown[0], dropdown[1]).get_attribute("innerHTML").splitlines()[0])
             else:
                 list_in_dropdown.append(driver.find_element(dropdown[0], "(" + dropdown[1] + ")[" +
-                                                        str(len_list_in_dropdown) + "]").get_attribute("innerHTML").splitlines()[0])
+                                                            str(len_list_in_dropdown) + "]").get_attribute(
+                    "innerHTML").splitlines()[0])
             len_list_in_dropdown -= 1
         assert list_in_dropdown.sort() == list_for_check.sort()
 
@@ -26,9 +29,16 @@ class AssertsSteps:
             time.sleep(1)
 
     @staticmethod
-    def check_exists_by_xpath(driver, element):
+    def check_exists_element(driver, element):
         try:
             driver.find_element(element[0], element[1])
         except NoSuchElementException:
             return False
         return True
+
+    @staticmethod
+    def check_not_exists_element(driver, element):
+        try:
+            driver.find_element(element[0], element[1])
+        except NoSuchElementException:
+            return
