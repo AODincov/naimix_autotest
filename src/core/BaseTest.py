@@ -8,7 +8,6 @@ class BaseTest:
 
     @pytest.fixture
     def base_test(self):
-
         yield
         self.driver.close()
 

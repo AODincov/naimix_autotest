@@ -1,5 +1,6 @@
 from src.core.WebElement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
+from src.pages.CompanyInfoPage import CompanyInfoPage
 
 
 class AuthorizationPage:
@@ -27,3 +28,11 @@ class AuthorizationPage:
     @staticmethod
     def is_open(driver):
         driver.wait.until(ec.visibility_of_element_located(AuthorizationPage.__login_button.get()))
+
+    @staticmethod
+    def full_login(driver, login: str, password:str):
+        AuthorizationPage.open_login_page(driver)
+        AuthorizationPage.close_cookie_login(driver)
+        AuthorizationPage.is_open(driver)
+        AuthorizationPage.login(driver, login, password)
+        CompanyInfoPage.is_open(driver)
