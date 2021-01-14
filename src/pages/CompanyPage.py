@@ -7,6 +7,8 @@ from src.steps.AssertsSteps import AssertsSteps
 
 # Поиск и создание компаний
 class CompanyPage(LeftNavigationBlock):
+    __dropdown_company_type_button: WebElement = WebElement(r"//i[@class='dropdown icon']")
+    __cancel_button: WebElement = WebElement(r"//button[@class='ui basic button apply-buttons__cancel']")
     __create_company_button: WebElement = WebElement(r"//button")
     __info_about_customer_title: WebElement = WebElement(r"#root > div.layouts > div.layouts_content > div > "
                                                          "div.client-new__header > div")
@@ -46,6 +48,13 @@ class CompanyPage(LeftNavigationBlock):
         return __category_select
 
     @staticmethod
+    def xpath_for_select_type(type_company):
+        __type_company: WebElement = WebElement(
+            "r//div[@class='visible menu transition']//div[@role='option']//span[text()='Иностранная организация']"
+        )
+        return __type_company
+
+    @staticmethod
     def xpath_for_req_field_new_company(namefield):
         __field: WebElement = WebElement(
             r"//div[contains(text(),'" + namefield + "')]/..//div[text()='Обязательное поле']")
@@ -63,6 +72,19 @@ class CompanyPage(LeftNavigationBlock):
     @staticmethod
     def click_create_company_button(driver):
         driver.wait.until(ec.presence_of_element_located(CompanyPage.__create_company_button.get())).click()
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__info_about_customer_title.get()))
+
+    @staticmethod
+    def click_add_button_with_go_on_search_company(driver):
+        driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get()))
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__add_button.get()))
+        driver.wait.until(ec.element_to_be_clickable(CompanyPage.__add_button.get())).click()
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__name_company_search_input.get()))
+
+    @staticmethod
+    def click_cancel_company_button(driver):
+        driver.wait.until(ec.presence_of_element_located(CompanyPage.__cancel_button.get())).click()
         driver.wait.until(ec.visibility_of_element_located(CompanyPage.__info_about_customer_title.get()))
 
     @staticmethod
@@ -97,14 +119,6 @@ class CompanyPage(LeftNavigationBlock):
             ec.visibility_of_element_located(CompanyPage.xpath_for_select_category(category).get())).click()
 
     @staticmethod
-    def click_add_button_with_go_on_search_company(driver):
-        driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get()))
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__add_button.get()))
-        driver.wait.until(ec.element_to_be_clickable(CompanyPage.__add_button.get())).click()
-        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__name_company_search_input.get()))
-
-    @staticmethod
     def search_company_with_go_on_info(driver, short_name_company):
         driver.wait.until(
             ec.visibility_of_element_located(CompanyPage.__name_company_search_input.get())).send_keys(
@@ -114,3 +128,17 @@ class CompanyPage(LeftNavigationBlock):
             ec.element_to_be_clickable(CompanyPage.xpath_for_company_in_search_table(short_name_company).get())).click()
         driver.wait.until(
             ec.visibility_of_element_located(CompanyInfoPage.xpath_title_info_page(short_name_company).get()))
+
+    @staticmethod
+    def select_type_client(driver):
+        driver.wait.until(ec.element_to_be_clickable(CompanyPage.__company_dropdown_button.get()))
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.xpath_for_select_category("").get())).click()
+
+    @staticmethod
+    def select_type_company(driver, type_company):
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__dropdown_company_type_button.get()))
+        driver.wait.until(ec.element_to_be_clickable(CompanyPage.__dropdown_company_type_button.get())).click()
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.xpath_for_select_type(type_company).get()))
+        driver.wait.until(ec.element_to_be_clickable(CompanyPage.xpath_for_select_type(type_company).get())).click()
+
+

@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from resources.configuration import CHROME_PATH
 from selenium import webdriver
@@ -7,15 +8,15 @@ import urllib3
 from urllib3.util.retry import Retry
 import time
 from selenium.webdriver.support import expected_conditions as ec
-
 from src.core.WebElement import WebElement
 
 
-class BaseTest(object):
+class BaseTest:
     url = 'https://nm-test.mmtr.ru/'
     config = 'chrome'
 
-    def get_driver(self):
+    @pytest.fixture()
+    def resource(self, request):
         if self.config == 'chrome':
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--start-maximized")
@@ -36,12 +37,17 @@ class BaseTest(object):
             self.driver.implicitly_wait(15)
         elif self.config == 'None':
             print('No driver type specified....')
+        self.driver.get(self.url)
+        self.driver.wait = WebDriverWait(self.driver, 60)
+        yield "resource"
+
+        def teardown():
+            self.driver.close()
+
+        request.addfinalizer(teardown)
 
     def login(self, login, password):
         try:
-            self.get_driver()
-            self.driver.get(self.url)
-            self.driver.wait = WebDriverWait(self.driver, 60)
             self.driver.wait.until(ec.element_to_be_clickable(WebElement("//input[@placeholder='E-mail']").get()))
             self.driver.wait.until(
                 ec.element_to_be_clickable(WebElement("#root > div.login__wrapper > div.login-cookie > div > "
@@ -73,12 +79,10 @@ class BaseTest(object):
             time.sleep(30)
             print(str(e))
             print("*********Portal Connection refused by the server**********")
-
         except urllib3.exceptions.NewConnectionError as e:
             print(str(e))
             print("********Portal New connection timed out***********")
             time.sleep(30)
-
         except urllib3.exceptions.MaxRetryError as e:
             print(str(e))
             time.sleep(30)
@@ -93,13 +97,3 @@ class BaseTest(object):
             time.sleep(10)
             print(str(e))
         self.driver.implicitly_wait(3)
-
-    # Closing the driver window and terminating the test
-    def close(self):
-        self.driver.close()
-
-    def tearDown(self):
-        self.driver.close()
-    # if __name__ == '__main__':
-    #  Driver().login()
-    #  Driver().close()
