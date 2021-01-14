@@ -13,32 +13,33 @@ from src.core.WebElement import WebElement
 
 class BaseTest(object):
     url = 'https://nm-test.mmtr.ru/'
-    driver = ''
     config = 'chrome'
-    if config == 'chrome':
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("disable-infobars")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        driver = webdriver.Chrome(CHROME_PATH, chrome_options=chrome_options)
-        driver.implicitly_wait(15)
-        print("Running tests on Chrome driver")
-    elif config == 'ie':
-        driver = webdriver.Ie()
-        print("Running tests on Internet Explorer driver")
-        driver.implicitly_wait(15)
-    elif config == 'firefox':
-        driver = webdriver.Firefox()
-        print("Running tests on Firefox driver")
-        driver.implicitly_wait(15)
-    elif config == 'None':
-        print('No driver type specified.... continuing with the default driver')
-        driver = webdriver.Chrome()
+
+    def get_driver(self):
+        if self.config == 'chrome':
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("disable-infobars")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--no-sandbox")
+            self.driver = webdriver.Chrome(CHROME_PATH, chrome_options=chrome_options)
+            self.driver.implicitly_wait(15)
+            print("Running tests on Chrome driver")
+        elif self.config == 'ie':
+            self.driver = webdriver.Ie()
+            print("Running tests on Internet Explorer driver")
+            self.driver.implicitly_wait(15)
+        elif self.config == 'firefox':
+            self.driver = webdriver.Firefox()
+            print("Running tests on Firefox driver")
+            self.driver.implicitly_wait(15)
+        elif self.config == 'None':
+            print('No driver type specified....')
 
     def login(self, login, password):
         try:
+            self.get_driver()
             self.driver.get(self.url)
             self.driver.wait = WebDriverWait(self.driver, 60)
             self.driver.wait.until(ec.element_to_be_clickable(WebElement("//input[@placeholder='E-mail']").get()))
@@ -95,11 +96,10 @@ class BaseTest(object):
 
     # Closing the driver window and terminating the test
     def close(self):
-        self.driver.quit()
+        self.driver.close()
 
     def tearDown(self):
-        self.driver.quit()
-
+        self.driver.close()
     # if __name__ == '__main__':
     #  Driver().login()
     #  Driver().close()
