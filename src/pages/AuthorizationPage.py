@@ -1,6 +1,5 @@
 from src.core.WebElement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
-from src.pages.CompanyPage import CompanyPage
 from src.pages.blocks.LeftNavigationBlock import LeftNavigationBlock
 
 

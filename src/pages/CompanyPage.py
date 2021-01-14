@@ -19,7 +19,7 @@ class CompanyPage(LeftNavigationBlock):
     __category_dropdown: WebElement = WebElement(r"//div[@name='categoryId']//div[@class='menu "
                                                  r"transition']")
     __option_for_dropdown: WebElement = WebElement(r"//div[@role='option']")
-    __add_button: WebElement = WebElement(r"//button[@class='ui button apply-buttons__submit']")
+    __add_button: WebElement = WebElement(r"//span[text()='Добавить']")
 
     __official_name_company_input: WebElement = WebElement(
         r"//input[@placeholder='Введите официальное название компании']")
@@ -54,7 +54,8 @@ class CompanyPage(LeftNavigationBlock):
     @staticmethod
     def close_content_list_task(driver):
         if AssertsSteps.check_exists_element(driver, CompanyPage.__load_content_icon.get()):
-            driver.wait.until(ec.element_to_be_clickable(CompanyPage.__close_content_button_with_load.get())).click()
+            driver.wait.until(
+                ec.element_to_be_clickable(CompanyPage.__close_content_button_with_load.get())).click()
         else:
             driver.wait.until(ec.presence_of_element_located(CompanyPage.__close_content_button.get()))
             driver.wait.until(ec.element_to_be_clickable(CompanyPage.__close_content_button.get())).click()
@@ -98,6 +99,8 @@ class CompanyPage(LeftNavigationBlock):
     @staticmethod
     def click_add_button_with_go_on_search_company(driver):
         driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get()))
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        driver.wait.until(ec.visibility_of_element_located(CompanyPage.__add_button.get()))
         driver.wait.until(ec.element_to_be_clickable(CompanyPage.__add_button.get())).click()
         driver.wait.until(ec.visibility_of_element_located(CompanyPage.__name_company_search_input.get()))
 
