@@ -12,7 +12,7 @@ class WebElement:
 
     @staticmethod
     def __is_xpath_or_selector(locator: str) -> str:
-        if locator.startswith("//"):
+        if locator.startswith("r//") or locator.startswith("//"):
             return 'xpath'
         else:
             return 'css'

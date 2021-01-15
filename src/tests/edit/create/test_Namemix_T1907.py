@@ -15,8 +15,8 @@ class Test_Namemix_T1907(BaseTest):
         CompanyPage.click_create_company_button(self.driver)
         CompanyPage.filed_req_field(self.driver,
                                         "Тестовое название компании " + BaseSteps.den_random_str(5),
-                                        Test_Namemix_T1907.__short_name_company,
+                                        self.__short_name_company,
                                         "3778591896",
                                         "Тестовый адресс компании" + BaseSteps.den_random_str(5), "Аренда")
         CompanyPage.click_cancel_company_button(self.driver)
-        CompanyPage.search_company_with_go_on_info(self.driver, Test_Namemix_T1907.__short_name_company)
+        CompanyPage.search_company_with_go_on_info(self.driver, self.__short_name_company)

@@ -15,7 +15,7 @@ class Test_Namemix_T1912(BaseTest):
         CompanyPage.assert_dropdown_business_registration_form(self.driver, ["Юридическое лицо",
                                                                                  "Индивидуальный предприниматель",
                                                                                  "Иностранная организация"])
-        CompanyPage.assert_req_field(self.driver, "Официальное название компании", "Сокращенное название компании",
+        assert_req_field(self.driver, "Официальное название компании", "Сокращенное название компании",
                                          "ИНН", "Фактический адрес", "Категория")
         CompanyPage.assert_not_req_field(self.driver, "ФИО контактного лица", "Телефон контактного лица", "ИНН",
                                              "E-mail контактного лица", "Промо-код")

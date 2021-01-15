@@ -14,12 +14,12 @@ class Test_Namemix_T1910(BaseTest):
         CompanyPage.assert_dropdown_business_registration_form(self.driver, ["Юридическое лицо",
                                                                                  "Индивидуальный предприниматель",
                                                                                  "Иностранная организация"])
-        CompanyPage.assert_req_field(self.driver, "Официальное название компании", "Сокращенное название компании",
+        assert_req_field(self.driver, "Официальное название компании", "Сокращенное название компании",
                                          "ИНН", "Фактический адрес", "Категория")
         CompanyPage.filed_req_field(self.driver,
                                         "Тестовое название компании " + BaseSteps.den_random_str(5),
-                                        Test_Namemix_T1910.__short_name_company,
+                                        self.__short_name_company,
                                         "3778591896",
                                         "Тестовый адресс компании" + BaseSteps.den_random_str(5), "Аренда")
         CompanyPage.click_add_button_with_go_on_search_company(self.driver)
-        CompanyPage.search_company_with_go_on_info(self.driver, Test_Namemix_T1910.__short_name_company)
+        CompanyPage.search_company_with_go_on_info(self.driver, self.__short_name_company)

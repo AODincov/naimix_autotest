@@ -42,3 +42,9 @@ class AssertsSteps:
             driver.find_element(element[0], element[1])
         except NoSuchElementException:
             return
+
+    @staticmethod
+    def check_validation_field(driver, element, not_correct_values, web_element_with_text_error):
+        for i in not_correct_values:
+            AssertsSteps.check_not_exists_element(driver, not_correct_values[i])
+            driver.find_element(web_element_with_text_error)

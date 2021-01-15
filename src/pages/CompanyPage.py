@@ -4,8 +4,10 @@ from selenium.webdriver.support import expected_conditions as ec
 from src.core.WebElement import WebElement
 from src.steps.AssertsSteps import AssertsSteps
 
-
 # Поиск и создание компаний
+from src.steps.BrowserSteps import BrowserSteps
+
+
 class CompanyPage(LeftNavigationBlock):
     __dropdown_company_type_button: WebElement = WebElement(r"//i[@class='dropdown icon']")
     __cancel_button: WebElement = WebElement(r"//button[@class='ui basic button apply-buttons__cancel']")
@@ -35,6 +37,11 @@ class CompanyPage(LeftNavigationBlock):
     __search_company_button: WebElement = WebElement(r"//span[text()='Найти']")
 
     @staticmethod
+    def xpath_field_for_new_company(field):
+        __xpath_field_new_company: WebElement = WebElement("//input[@placeholder='" + field + "']")
+        return __xpath_field_new_company
+
+    @staticmethod
     def xpath_for_company_in_search_table(short_name_company):
         __company_card_href: WebElement = WebElement(r"//a[text()='" + short_name_company + "']")
         return __company_card_href
@@ -55,9 +62,9 @@ class CompanyPage(LeftNavigationBlock):
         return __type_company
 
     @staticmethod
-    def xpath_for_req_field_new_company(namefield):
+    def xpath_for_error_field_new_company(namefield, text_error):
         __field: WebElement = WebElement(
-            r"//div[contains(text(),'" + namefield + "')]/..//div[text()='Обязательное поле']")
+            r"//div[contains(text(),'" + namefield + "')]/..//div[text()='" + text_error + "']")
         return __field
 
     @staticmethod
@@ -77,7 +84,7 @@ class CompanyPage(LeftNavigationBlock):
     @staticmethod
     def click_add_button_with_go_on_search_company(driver):
         driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get()))
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        BrowserSteps.scroll_down(driver)
         driver.wait.until(ec.visibility_of_element_located(CompanyPage.__add_button.get()))
         driver.wait.until(ec.element_to_be_clickable(CompanyPage.__add_button.get())).click()
         driver.wait.until(ec.visibility_of_element_located(CompanyPage.__name_company_search_input.get()))
@@ -96,13 +103,30 @@ class CompanyPage(LeftNavigationBlock):
     def assert_req_field(driver, *field):
         driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get())).click()
         for i in field:
-            driver.wait.until(ec.presence_of_element_located(CompanyPage.xpath_for_req_field_new_company(i).get()))
+            driver.wait.until(ec.visibility_of_element_located(
+                CompanyPage.xpath_for_error_field_new_company(i, 'Обязательное поле').get()))
+            print(i)
+
+
+    @staticmethod
+    def assert_error_inputs_field(driver, field, not_correct_values, error):
+        for i in field:
+            BrowserSteps.scroll_up(driver)
+            driver.wait.until(ec.visibility_of_element_located(
+                CompanyPage.xpath_field_for_new_company(not_correct_values))).send_keys(not_correct_values)
+            # todo добавить проверку введенного значения
+            BrowserSteps.scroll_down(driver)
+            driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get())).click()
+            BrowserSteps.scroll_up(driver)
+            driver.wait.until(ec.visibility_of_element_located(
+                CompanyPage.xpath_for_error_field_new_company(i, error).get()))
 
     @staticmethod
     def assert_not_req_field(driver, *field):
         driver.wait.until(ec.presence_of_element_located(CompanyPage.__add_button.get())).click()
         for i in field:
-            AssertsSteps.check_not_exists_element(driver, CompanyPage.xpath_for_req_field_new_company(i).get())
+            AssertsSteps.check_not_exists_element(driver, CompanyPage.xpath_for_error_field_new_company(i,
+                                                                                                        'Обязательное поле').get())
 
     @staticmethod
     def filed_req_field(driver, official_name_company, short_name_company, inn, address_company, category):
@@ -140,5 +164,3 @@ class CompanyPage(LeftNavigationBlock):
         driver.wait.until(ec.element_to_be_clickable(CompanyPage.__dropdown_company_type_button.get())).click()
         driver.wait.until(ec.visibility_of_element_located(CompanyPage.xpath_for_select_type(type_company).get()))
         driver.wait.until(ec.element_to_be_clickable(CompanyPage.xpath_for_select_type(type_company).get())).click()
-
-
